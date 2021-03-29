@@ -22,6 +22,19 @@ Complex number library provided by [rwl](https://github.com/rwl) on [pub.dev](ht
 
 This package gives the same level of complex math computation functionality as `cmath` in Python3.
 
+### Sample I/O
+
+```dart
+x(0) =  0.500 + i(0.000)   ⸻⸻>   X(0) =  2.000 + i(0.000)
+x(1) =  0.500 + i(0.000)   ⸻⸻>   X(1) =  0.500 - i(1.207)
+x(2) =  0.500 + i(0.000)   ⸻⸻>   X(2) =  0.000 + i(0.000)
+x(3) =  0.500 + i(0.000)   ⸻⸻>   X(3) =  0.500 - i(0.207)
+x(4) =  0.000 + i(0.000)   ⸻⸻>   X(4) =  0.000 + i(0.000)
+x(5) =  0.000 + i(0.000)   ⸻⸻>   X(5) =  0.500 + i(0.207)
+x(6) =  0.000 + i(0.000)   ⸻⸻>   X(6) =  0.000 + i(0.000)
+x(7) =  0.000 + i(0.000)   ⸻⸻>   X(7) =  0.500 + i(1.207)
+```
+
 # 2. Effect of PID parameters on PID Controller
 
 - Towards **Control Systems** (CS) CIE Component
