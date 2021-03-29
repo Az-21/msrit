@@ -5,18 +5,18 @@ A repo to host assignments.
 - Towards **Digital Signals Processing** (DSP) CIE Component
 - Semester VI
 
-## Files
+### Files
 
 ```dart
 ./dit_fft/fft.dart                // Static DITFFT
 ```
 
-## Built Using
+### Built Using
 
 - Dart
 - Radix2 algorithm
 
-## Complex numbers library
+### Complex numbers library
 
 Complex number library provided by [rwl](https://github.com/rwl) on [pub.dev](https://pub.dev/packages/complex) under [Apache 2.0 License](https://www.apache.org/licenses/LICENSE-2.0).
 
@@ -27,12 +27,12 @@ This package gives the same level of complex math computation functionality as `
 - Towards **Control Systems** (CS) CIE Component
 - Semester V
 
-## Files
+### Files
 
 ```dart
 ./pidController/                  // MATLAB .m files
 ```
 
-## Built Using
+### Built Using
 
 - MATLAB
