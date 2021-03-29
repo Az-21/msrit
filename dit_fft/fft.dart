@@ -5,27 +5,33 @@ void main() {
   // ⸻⸻⸻⸻
   // * Preferences
   // ⸻⸻⸻⸻
-  int precision = 2; // Calculate upto ${digits} of decimal
+  int precision = 3; // Calculate upto ${digits} of decimal
   String imgF = 'j('; // format the output to your liking
   String imgB = ')'; // a + ib -> a + $imgF b $imgB
+  String separator = '   ⸻⸻>   '; // x(0) ⸻> X(0)
 
   // ⸻⸻⸻⸻
   // * Input signal
   // ⸻⸻⸻⸻
   // Complex(a, b) == a + ib
   List<Complex> f = [
-    Complex(1, 0),
-    Complex(1, 0),
-    Complex(1, 0), // intentionally selected 3 elements only
+    Complex(0.5, 0),
+    Complex(0.5, 0),
+    Complex(0.5, 0),
+    Complex(0.5, 0),
+    Complex(0.0, 0), // intentionally selected 5 elements only -> padding safety
   ];
 
   // ⸻⸻⸻⸻⸻⸻⸻⸻⸻
   // * FFT -> Adds padding if necessairy
   // ⸻⸻⸻⸻⸻⸻⸻⸻⸻
   if (isPowerOfTwo(f.length)) {
-    printComplex(FFT(f), precision, imgF, imgB);
+    List<Complex> f_FFT = FFT(f);
+    printComplex(f, f_FFT, precision, imgF, imgB, separator);
   } else {
-    printComplex(FFT(padWithZeros(f)), precision, imgF, imgB);
+    f = padWithZeros(f);
+    List<Complex> f_FFT = FFT(f);
+    printComplex(f, f_FFT, precision, imgF, imgB, separator);
   }
 }
 
@@ -112,25 +118,39 @@ List<Complex> FFT(List<Complex> f) {
 // ⸻⸻⸻⸻⸻⸻⸻⸻
 // * Function to print output
 // ⸻⸻⸻⸻⸻⸻⸻⸻
-void printComplex(
-    List<Complex> f, int precision, String styleF, String styleB) {
+void printComplex(List<Complex> f, List<Complex> f_FFT, int precision,
+    String styleF, String styleB, String separator) {
+  String message = '';
   for (int i = 0; i < f.length; i++) {
     String a = f[i].real.toStringAsFixed(precision);
     String b = f[i].imaginary.toStringAsFixed(precision);
+    String x = f_FFT[i].real.toStringAsFixed(precision);
+    String y = f_FFT[i].imaginary.toStringAsFixed(precision);
 
+    // Pre FFT
+    message = 'x($i) = ';
+    !a.startsWith('-') ? message += ' $a ' : message += '$a ';
     if (!b.startsWith('-')) {
-      if (!a.startsWith('-')) {
-        print('X($i) =  $a + $styleF$b$styleB'); // +a + ib
-      } else {
-        print('X($i) = $a + $styleF$b$styleB'); // -a + ib
-      }
+      message += '+ $styleF$b$styleB';
     } else {
       b = b.substring(1);
-      if (!a.startsWith('-')) {
-        print('X($i) =  $a - $styleF$b$styleB'); // +a - ib
-      } else {
-        print('X($i) = $a - $styleF$b$styleB'); // -a - ib
-      }
+      message += '- $styleF$b$styleB';
     }
+
+    // FFT Symbol
+    message += separator;
+
+    // Post FFT
+    message += 'X($i) = ';
+    !x.startsWith('-') ? message += ' $x ' : message += '$x ';
+    if (!y.startsWith('-')) {
+      message += '+ $styleF$y$styleB';
+    } else {
+      y = y.substring(1);
+      message += '- $styleF$y$styleB';
+    }
+
+    // Print
+    print(message);
   }
 }
