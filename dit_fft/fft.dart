@@ -10,14 +10,39 @@ void main() {
   List<Complex> f = [
     Complex(1, 0),
     Complex(1, 0),
-    Complex(2, 0),
     Complex(1, 0),
   ];
 
   // ⸻⸻
   // * FFT
   // ⸻⸻
-  print(FFT(f));
+  if (isPowerOfTwo(f.length)) {
+    print(FFT(f));
+  } else {
+    print(FFT(padWithZeros(f)));
+  }
+}
+
+// ⸻⸻⸻⸻⸻⸻⸻⸻
+// * Function to check 2^n form
+// ⸻⸻⸻⸻⸻⸻⸻⸻
+bool isPowerOfTwo(int num) {
+  // 8 = 1000
+  // 7 = 0111
+  // & = 0000
+  return (num & num - 1 == 0) ? true : false;
+}
+
+// ⸻⸻⸻⸻⸻⸻⸻⸻
+// * Function to pad signal with zeros
+// ⸻⸻⸻⸻⸻⸻⸻⸻
+List<Complex> padWithZeros(List<Complex> f) {
+  int N = f.length;
+  // 2 ^ (log(N)/log(2)) -> nearest 2^n
+  int nextPowerOfTwo = pow(2, (log(N) / log(2)).ceil()).toInt();
+  int paddingReqd = nextPowerOfTwo - N;
+
+  return f + List<Complex>.filled(paddingReqd, Complex(0, 0));
 }
 
 // ⸻⸻⸻⸻⸻⸻⸻⸻
