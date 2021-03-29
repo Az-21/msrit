@@ -6,7 +6,7 @@ void main() {
   // * Preferences
   // ⸻⸻⸻⸻
   int precision = 3; // Calculate upto ${digits} of decimal
-  String imgF = 'j('; // format the output to your liking
+  String imgF = 'i('; // format the output to your liking
   String imgB = ')'; // a + ib -> a + $imgF b $imgB
   String separator = '   ⸻⸻>   '; // x(0) ⸻> X(0)
 
@@ -90,7 +90,7 @@ List<Complex> FFT(List<Complex> f) {
   }
 
   // Iterative Radix2 FFT [super:f] -> [f:even][f:odd]
-  // Dissimation
+  // Decimation
   List<Complex> even = FFT(halfEven);
   List<Complex> odd = FFT(halfOdd);
 
