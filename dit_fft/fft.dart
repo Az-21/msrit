@@ -2,24 +2,30 @@ import './complex.dart'; // Complex number handler - pub.dev/packages/complex
 import 'dart:math'; // just for `pi`
 
 void main() {
-  // Complex(a, b) === a + ib
+  // ⸻⸻⸻⸻
+  // * Preferences
+  // ⸻⸻⸻⸻
+  int precision = 2; // Calculate upto ${digits} of decimal
+  String imgF = 'j('; // format the output to your liking
+  String imgB = ')'; // a + ib -> a + $imgF b $imgB
 
   // ⸻⸻⸻⸻
   // * Input signal
   // ⸻⸻⸻⸻
+  // Complex(a, b) == a + ib
   List<Complex> f = [
     Complex(1, 0),
     Complex(1, 0),
-    Complex(1, 0),
+    Complex(1, 0), // intentionally selected 3 elements only
   ];
 
-  // ⸻⸻
-  // * FFT
-  // ⸻⸻
+  // ⸻⸻⸻⸻⸻⸻⸻⸻⸻
+  // * FFT -> Adds padding if necessairy
+  // ⸻⸻⸻⸻⸻⸻⸻⸻⸻
   if (isPowerOfTwo(f.length)) {
-    print(FFT(f));
+    printComplex(FFT(f), precision, imgF, imgB);
   } else {
-    print(FFT(padWithZeros(f)));
+    printComplex(FFT(padWithZeros(f)), precision, imgF, imgB);
   }
 }
 
@@ -101,4 +107,30 @@ List<Complex> FFT(List<Complex> f) {
 
   // Return dissipated FFT to iterative caller, or final FFT to main()
   return currentFFT;
+}
+
+// ⸻⸻⸻⸻⸻⸻⸻⸻
+// * Function to print output
+// ⸻⸻⸻⸻⸻⸻⸻⸻
+void printComplex(
+    List<Complex> f, int precision, String styleF, String styleB) {
+  for (int i = 0; i < f.length; i++) {
+    String a = f[i].real.toStringAsFixed(precision);
+    String b = f[i].imaginary.toStringAsFixed(precision);
+
+    if (!b.startsWith('-')) {
+      if (!a.startsWith('-')) {
+        print('X($i) =  $a + $styleF$b$styleB'); // +a + ib
+      } else {
+        print('X($i) = $a + $styleF$b$styleB'); // -a + ib
+      }
+    } else {
+      b = b.substring(1);
+      if (!a.startsWith('-')) {
+        print('X($i) =  $a - $styleF$b$styleB'); // +a - ib
+      } else {
+        print('X($i) = $a - $styleF$b$styleB'); // -a - ib
+      }
+    }
+  }
 }
