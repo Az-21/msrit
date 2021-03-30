@@ -98,12 +98,12 @@ List<Complex> FFT(List<Complex> f) {
   List<Complex> currentFFT = List<Complex>.filled(N, Complex(0, 0));
 
   // NOTE: in Dart, (number ~/ 2) == (number / 2).toInt
-  int d = N ~/ 2; // dissipated length to gain advantage of W_N -> W_N/2
+  int d = N ~/ 2; // decimated length to gain advantage of W_N -> W_N/2
 
   for (int k = 0; k < d; k++) {
     Complex W_kN = W(k, N); // Get W from twiddle factor generator
 
-    /* FFT by dissipation
+    /* FFT by decimation
           X(k +  0 ) = G[k] + W * H[k]
           X(k + N/2) = G[k] - W * H[k]
     */
@@ -111,7 +111,7 @@ List<Complex> FFT(List<Complex> f) {
     currentFFT[k + d] = even[k] - W_kN * odd[k];
   }
 
-  // Return dissipated FFT to iterative caller, or final FFT to main()
+  // Return decimated FFT to iterative caller, or final FFT to main()
   return currentFFT;
 }
 
