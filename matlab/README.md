@@ -178,14 +178,41 @@ subplot(1, 2, 2); % 1x2 grid. plot#2
 stem(x, y1);
 ```
 
-## Problems
+## For Loop
 
 ```matlab
-% 1. Convert given expression into MATLAB expression
-a = 5;
-x = 2;
-y = 8;
+% For loop
+for i = 1:4
+    fprintf('%d\n', i);
+end
 
-c = exp(-1 * a * x) * sin(x) + 50 * y^(1/3);
-disp(c); % 100.0
+% Nested for loop
+a = [1:3; 2:4; 3:5; ];
+[m, n] = size(a); % get #[rows, cols] in [a]
+sigma = 0;
+
+for i = 1:m
+
+    for j = 1:n
+        sigma = sigma + a(i, j);
+    end
+
+end
+
+disp(sigma);
+```
+
+## if Statement
+
+```matlab
+num1 = 2;
+num2 = 2;
+
+if num1 == num2
+    disp('num1 == num2');
+elseif num1 > num2
+    disp('num1 > num2');
+else
+    disp('num1 < num2');
+end
 ```
