@@ -13,6 +13,12 @@ clc; clear; close all;
 % Section 2
 ```
 
+## User input
+
+```matlab
+userIn = input('Message = ');
+```
+
 ## Complex Numbers
 
 ```matlab
@@ -45,7 +51,6 @@ a = [1, 3, 6, 9];
 b = [2, 4, 6, 8];
 disp(times(a, b)); % [2, 12, 36, 72]
 disp(a .* b); % alternative
-disp(a * b'); % another alternative. b' -> transpose
 
 % Map operations on array
 disp(a .* 2); % mult every element by 2
@@ -53,6 +58,12 @@ disp(a ./ 2); % div every element by 2
 disp(a .^ 2); % raise every element by pow(2)
 disp(a + 2); % add 2 to every element
 disp(a - 2); % sub 2 with every element
+
+% Reverse array
+x = x(end: -1: 1);
+
+% Transpose of array
+x = x';
 ```
 
 ## Matrix Generation
@@ -215,4 +226,35 @@ elseif num1 > num2
 else
     disp('num1 < num2');
 end
+```
+
+## Function / Method
+
+### Local Function
+
+We can declare the function within the main `.m` file.
+
+⚠ The functions must be declared in the end. Why end? For the same reason array starts at `1`.
+
+---
+
+### Importing Function
+
+Function file name `functionName.m` and main function declared inside must share the same name `functionName`
+
+```matlab
+% Filename: mySquare.m
+
+function [x, y] = mySort(u)
+%  return   ^              ^ input
+
+x = sort(u);
+y = flip(x);
+end
+```
+
+```matlab
+% Filename: main.m
+
+disp(mySort([3, 1, 2]));
 ```
