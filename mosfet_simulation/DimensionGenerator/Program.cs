@@ -94,7 +94,7 @@ namespace DimensionGenerator {
 
             // Doping 3
             Console.WriteLine($"→ Analytic Doping Model 3".Pastel(text));
-            Console.WriteLine($"    → Copy-paste Analytic Doping Model 3".Pastel(text));
+            Console.WriteLine($"    → Copy-paste Analytic Doping Model 2".Pastel(text));
             Console.WriteLine($"    → Base position (ro): {$"{240 * perunit}, {60 * perunit}".Pastel(number)}\n".Pastel(text));
 
             // Metal contacts
