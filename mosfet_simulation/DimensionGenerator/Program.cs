@@ -31,7 +31,7 @@ namespace DimensionGenerator {
             //char channelType = 'n';
 
 
-            double perunit = channelWidth / 160; // scaling factor
+            double perunit = channelWidth / 200; // scaling factor
             double surfaceThickness = 3 * perunit; // ----------------------TODO: find if it scales or same as width
             double rectH = 70 * perunit;
             double rectW = 300 * perunit;
@@ -48,8 +48,8 @@ namespace DimensionGenerator {
                 dopeBase = "Acceptor doping (p-type)";
                 dopeEdge = "Donator doping (n-type)";
             } else if(channelType == 'p') {
-                dopeBase = "Donator doping (p-type)";
-                dopeEdge = "Acceptor doping (n-type)";
+                dopeBase = "Donator doping (n-type)";
+                dopeEdge = "Acceptor doping (p-type)";
             } else {
                 Console.WriteLine($"\n\n\nInvalid channel type: '{channelType}'. Accepted responses are 'p' and 'n'");
                 Console.WriteLine("Restart the console app. Press any key to exit ...");
