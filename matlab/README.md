@@ -230,22 +230,14 @@ end
 
 ## Function / Method
 
-### Local Function
-
-We can declare the function within the main `.m` file.
-
-⚠ The functions must be declared in the end. Why end? For the same reason array starts at `1`.
-
----
-
 ### Importing Function
 
 Function file name `functionName.m` and main function declared inside must share the same name `functionName`
 
 ```matlab
-% Filename: mySquare.m
+% Filename: mySort.m
 
-function [x, y] = mySort(u)
+function [x, y] = mySort=(u)
 %  return   ^              ^ input
 
 x = sort(u);
