@@ -3,55 +3,91 @@
 clc; clear; close all;
 
 %% Matrix DFT and IDFT
-xn = [1, 2, 3]; % Input signal
+x_n = [1, 2, 3]; % Input signal
 
-N = length(xn);
+N = length(x_n);
 n = 0:N - 1;
 k = 0:N - 1;
 nk = n' * k;
 Wk = exp(-2 * pi * nk * 1i / N); % Twiddle factor
 
 % DFT
-Xn = Wk * xn'; % Output signal
+Xn = Wk * x_n'; % Output signal
 disp(Xn);
 
 % IDFT
-Xk = Wk * xn';
-xn_idft = (1 / N) * conj(Wk) * Xk;
+X_k = Wk * x_n';
+xn_idft = (1 / N) * conj(Wk) * X_k;
 disp(xn_idft);
 
 %% DFT using for loop
-xn = [1, 2, 3, 4]; % Input signal
-N = length(xn);
+x_n = [1, 2, 3, 4]; % Input signal
+N = length(x_n);
 
 for k = 0:N - 1
-    xk = 0;
+    x_k = 0;
 
     for n = 0:N - 1
-        xk = xn(n + 1) * exp(-2 * pi * n * k * 1i / N) + xk;
+        x_k = x_n(n + 1) * exp(-2 * pi * n * k * 1i / N) + x_k;
     end
 
-    Xk(k + 1, 1) = xk;
+    X_k(k + 1, 1) = x_k;
 end
 
-disp(Xk);
+disp(X_k);
 
 %% Linear and curcular convolution | NOTE: don't use built-in function in exam
-xn = [1, 2, 3, 4];
-hn = [1, -1, 1];
+x_n = [1, 2, 3, 4];
+h_n = [1, -1, 1];
 
-y_linear = conv(xn, hn);
-y_circular = cconv(xn, hn, max(length(xn), length(hn)));
+y_linear = conv(x_n, h_n);
+y_circular = cconv(x_n, h_n, max(length(x_n), length(h_n)));
 
 disp(y_linear);
 disp(y_circular);
 
 %% Equal linear and circular
-xn = [1, 2, 3, 4];
-hn = [1, -1, 1];
+x_n = [1, 2, 3, 4];
+h_n = [1, -1, 1];
 
-y_linear = conv(xn, hn);
-y_circular = cconv(xn, hn, length(xn) + length(hn) - 1);
+y_linear = conv(x_n, h_n);
+y_circular = cconv(x_n, h_n, length(x_n) + length(h_n) - 1);
 
 disp(y_linear);
 disp(y_circular);
+
+%% Homework #2: Birthday DFT
+x_n = [0, 4, 0, 6]; % Input signal
+N = length(x_n);
+X_k = zeros(1, N);
+
+for k = 0:N - 1
+    x_k = 0;
+
+    for n = 0:N - 1
+        x_k = x_n(n + 1) * exp(-2 * pi * n * k * 1i / N) + x_k;
+    end
+
+    X_k(1, k + 1) = x_k;
+end
+
+disp(X_k');
+
+stem(0:N - 1, magnitude(X_k));
+hold on;
+stem(0:N - 1, radian_angle(X_k));
+xlabel('Point');
+ylabel('Intensity');
+legend('Magnitude', 'Phasor (radians)');
+grid('on');
+set(gca, 'color', '#24292E');
+set(gca, 'GridColor', '#a0a0a0');
+axis([-1, N, -5, 15]);
+
+function y = magnitude(complex)
+    y = power((real(complex).^2 + imag(complex).^2), 1/2);
+end
+
+function y = radian_angle(complex)
+    y = atan(imag(complex) ./ real(complex));
+end
