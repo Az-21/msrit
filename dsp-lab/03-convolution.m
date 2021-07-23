@@ -88,3 +88,27 @@ for n = 1:M
 end
 
 disp(y);
+
+%% Homework #3: Tabular method
+x_n = 1:10;
+h_n = 6:8;
+
+shift = 0;
+lenX = length(x_n);
+lenH = length(h_n);
+y_n = zeros(1, lenX + lenH - 1); % tabular convolution init
+
+for i = 1:lenH
+    row = tabularShift(x_n, lenX, lenH, shift);
+    y_n = y_n + h_n(i) .* row; % add columns
+    shift = shift + 1;
+end
+
+disp(y_n);
+
+function y_n = tabularShift(x_n, lenX, lenH, shift)
+    y_n = zeros(1, lenX + lenH - 1);
+    lenY = length(y_n);
+    padding = zeros(1, lenY - lenX - shift);
+    y_n(shift + 1:end) = [x_n(1:end), padding];
+end
