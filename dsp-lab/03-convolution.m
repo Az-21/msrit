@@ -245,7 +245,7 @@ end
 disp(conv_matrix);
 disp(y_n);
 
-% Overlap save method
+%% Overlap save method
 x_n = [1, 1, 0, 3, 1, 8, 0, 5, 0, 1, 1, 2, 2, 3];
 h_n = [1, -1, 1];
 disp(conv(x_n, h_n));
