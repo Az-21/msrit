@@ -196,29 +196,98 @@ end
 
 disp(x_matrix);
 
-%% Overlap save method
+%% Overlap add method
 x_n = [1, 1, 0, 3, 1, 8, 0, 5, 0, 1, 1, 2, 2, 3];
 h_n = [1, -1, 1];
+disp(conv(x_n, h_n));
 
-N = 6;
 M = length(h_n);
-L = N - M + 1; % N = L + M - 1
+N = 6;
+L = N - M + 1;
 
 % Pad zeros to make `length(x_n)` perfect multiple of `L`
 remainder = rem(length(x_n), L);
-padding = zeros(1, L - remainder);
-x_n = [x_n, padding];
+x_n = [x_n, zeros(1, L - remainder)];
 
-% Init matrix
+% Init x matrix
 rows = ceil(length(x_n) / N) + 1;
 x_matrix = zeros(rows, N);
 
-% First row with `M-1` zeros prefixed
-x_matrix(1, :) = [zeros(1, M - 1), x_n(1:L)];
+% Init h matrix
+h_n = [h_n, zeros(1, N - length(h_n))]; % To make `length(h_n) == N`
+h_matrix = zeros(N, N);
 
-for i = 2:L
+for i = 1:N
+    h_matrix(:, i) = h_n;
+    h_n = [h_n(end), h_n(1:end - 1)];
+end
+
+% Init overlap add matrix
+conv_matrix = zeros(rows, N + L * (rows - 1));
+
+% Special overlap add method padding for each section
+padding = zeros(1, M - 1);
+
+for i = 1:rows
+    x_matrix(i, :) = [x_n((i - 1) * L + 1:i * L), padding];
+
+    % Convolution of each row with h_matrix. Save result with shift of `L`
+    conv_matrix(i, 1 + L * (i - 1):N + L * (i - 1)) = h_matrix * x_matrix(i, :)';
+end
+
+% Final result using overlap add method (add columns)
+y_n = zeros(1, N + L * (rows - 1));
+
+for i = 1:rows
+    y_n = y_n + conv_matrix(i, :);
+end
+
+disp(conv_matrix);
+disp(y_n);
+
+% Overlap save method
+x_n = [1, 1, 0, 3, 1, 8, 0, 5, 0, 1, 1, 2, 2, 3];
+h_n = [1, -1, 1];
+disp(conv(x_n, h_n));
+
+M = length(h_n);
+N = 6;
+L = N - M + 1;
+
+% Pad zeros to make `length(x_n)` perfect multiple of `L`
+remainder = rem(length(x_n), L);
+x_n = [x_n, zeros(1, L - remainder)];
+
+% Init x matrix
+rows = ceil(length(x_n) / N) + 1;
+x_matrix = zeros(rows, N);
+
+% Init h matrix
+h_n = [h_n, zeros(1, N - length(h_n))]; % To make `length(h_n) == N`
+h_matrix = zeros(N, N);
+
+for i = 1:N
+    h_matrix(:, i) = h_n;
+    h_n = [h_n(end), h_n(1:end - 1)];
+end
+
+% Formation of overlap save x_matrix
+x_matrix(1, :) = [zeros(1, M - 1), x_n(1:L)]; % First row with `M-1` zeros prefixed
+
+for i = 2:rows
     last = x_matrix(i - 1, end - M + 2:end); % last M-1 elements
     x_matrix(i, :) = [last, x_n((i - 1) * L + 1:i * L)];
 end
 
-disp(x_matrix);
+% Convolution of each row of x_matrix with h_matrix.
+for i = 1:rows
+    add_matrix(i, :) = h_matrix * x_matrix(i, :)';
+end
+
+% Delete first `M-1` columns
+add_matrix = add_matrix(:, M:end);
+
+% Flatten matrix. Taking transpose first because MATLAB flattens columnwise
+add_matrix = add_matrix';
+add_matrix = add_matrix(:)'; % flatten and transpose
+disp(add_matrix);
