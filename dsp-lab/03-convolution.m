@@ -281,13 +281,13 @@ end
 
 % Convolution of each row of x_matrix with h_matrix.
 for i = 1:rows
-    add_matrix(i, :) = h_matrix * x_matrix(i, :)';
+    conv_matrix(i, :) = h_matrix * x_matrix(i, :)';
 end
 
 % Delete first `M-1` columns
-add_matrix = add_matrix(:, M:end);
+conv_matrix = conv_matrix(:, M:end);
 
 % Flatten matrix. Taking transpose first because MATLAB flattens columnwise
-add_matrix = add_matrix';
-add_matrix = add_matrix(:)'; % flatten and transpose
-disp(add_matrix);
+conv_matrix = conv_matrix';
+conv_matrix = conv_matrix(:)'; % flatten and transpose
+disp(conv_matrix);
