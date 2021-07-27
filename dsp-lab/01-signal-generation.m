@@ -99,3 +99,24 @@ plot(t, r1 + r2);
 
 %% Homework #1: Question 2
 plot(t / 2 + 0.5, -2 * (r1 + r2)); % time scaling -> shift time by 0.5 to compensate -> amplitude scaling
+
+% --------------- Rectifier ---------------
+%% Half wave rectifier
+x = -5:0.01:15;
+region = x >= 0;
+y = sin(x);
+half = y >= 0;
+plot(x, region .* (y .* half));
+
+%% Full wave rectifier
+x = -5:0.01:15;
+region = x >= 0;
+y = abs(sin(x));
+plot(x, region .* y);
+
+%% Chopper
+x = -5:0.01:15;
+region = x >= 0;
+y = sin(x);
+chop = y >= 0 & y <= 0.8;
+plot(x, region .* (y .* chop));
