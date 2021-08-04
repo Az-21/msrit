@@ -1,5 +1,3 @@
-% Abhishek Choudhary
-% 1MS18EE003
 % Experiment 1: Signal Generation
 
 clc; clear; close all;
