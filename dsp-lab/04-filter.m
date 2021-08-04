@@ -131,7 +131,7 @@ end
 
 % Plot
 m = 0:N - 1;
-stem(m, abs(hn));
+stem(m, real(hn));
 
 %% Butterworth filter
 wp = input('Enter the value of passband frequency in rad/sec : ')
