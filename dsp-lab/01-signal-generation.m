@@ -1,3 +1,5 @@
+% Abhishek Choudhary
+% 1MS18EE003
 % Experiment 1: Signal Generation
 
 clc; clear; close all;
@@ -112,13 +114,13 @@ plot(x, region .* (y .* chop));
 
 % --------------- Assignment ---------------
 %% Question 1
-t = -5:0.01:5;
-x1 = t >= 1 & t < 2;
-x2 = t >= 2 & t <= 3;
-r1 = x1 .* (t - 1);
-r2 = -1 .* x2 .* (t - 3);
-r = r1 + r2;
-plot(t, r);
+region= -5:0.01:5;
+range1 = region>= 1 & region< 2;
+range2 = region>= 2 & region<= 3;
+y1 = range1 .* (region- 1);
+y2 = -1 .* range2 .* (region- 3);
+y = y1 + y2;
+plot(region, y);
 
 %% Question 2
-plot(t / 2 + 0.5, -2 * r); % time scaling -> shift time by 0.5 to compensate -> amplitude scaling
+plot(region/ 2 + 0.5, -2 * y); % time scaling -> shift time by 0.5 to compensate -> amplitude scaling
