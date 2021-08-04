@@ -89,17 +89,6 @@ x1 = t >= 1 & t <= 3;
 x2 = t >= 2 & t <= 3;
 plot(t, x1 + x2);
 
-%% Homework #1: Question 1
-t = -5:0.01:5;
-x1 = t >= 1 & t < 2;
-x2 = t >= 2 & t <= 3;
-r1 = x1 .* (t - 1);
-r2 = -1 .* x2 .* (t - 3);
-plot(t, r1 + r2);
-
-%% Homework #1: Question 2
-plot(t / 2 + 0.5, -2 * (r1 + r2)); % time scaling -> shift time by 0.5 to compensate -> amplitude scaling
-
 % --------------- Rectifier ---------------
 %% Half wave rectifier
 x = -5:0.01:15;
@@ -120,3 +109,16 @@ region = x >= 0;
 y = sin(x);
 chop = y >= 0 & y <= 0.8;
 plot(x, region .* (y .* chop));
+
+% --------------- Assignment ---------------
+%% Question 1
+t = -5:0.01:5;
+x1 = t >= 1 & t < 2;
+x2 = t >= 2 & t <= 3;
+r1 = x1 .* (t - 1);
+r2 = -1 .* x2 .* (t - 3);
+r = r1 + r2;
+plot(t, r);
+
+%% Question 2
+plot(t / 2 + 0.5, -2 * r); % time scaling -> shift time by 0.5 to compensate -> amplitude scaling
