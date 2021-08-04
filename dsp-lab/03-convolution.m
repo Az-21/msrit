@@ -2,6 +2,7 @@
 
 clc; clear; close all;
 
+% --------------- Convolution methods ---------------
 %% Linear convolution
 x_n = [1, 2, 3, 4];
 h_n = [1, -1, 2];
@@ -89,27 +90,27 @@ end
 
 disp(y);
 
-%% Homework #3: Tabular method
-x_n = 1:10;
-h_n = 6:8;
+%% Tabular method
+x_n = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+h_n = [6, 7, 8];
 
 shift = 0;
-lenX = length(x_n);
-lenH = length(h_n);
-y_n = zeros(1, lenX + lenH - 1); % tabular convolution init
+xLen = length(x_n);
+hLen = length(h_n);
+y_n = zeros(1, xLen + hLen - 1); % tabular convolution init
 
-for i = 1:lenH
-    row = tabularShift(x_n, lenX, lenH, shift);
+for i = 1:hLen
+    row = tabularShift(x_n, xLen, hLen, shift);
     y_n = y_n + h_n(i) .* row; % add columns
     shift = shift + 1;
 end
 
 disp(y_n);
 
-function y_n = tabularShift(x_n, lenX, lenH, shift)
-    y_n = zeros(1, lenX + lenH - 1);
-    lenY = length(y_n);
-    padding = zeros(1, lenY - lenX - shift);
+function y_n = tabularShift(x_n, xLen, hLen, shift)
+    y_n = zeros(1, xLen + hLen - 1);
+    yLen = length(y_n);
+    padding = zeros(1, yLen - xLen - shift);
     y_n(shift + 1:end) = [x_n(1:end), padding];
 end
 
@@ -142,61 +143,8 @@ end
 circularConv = temp(2:N);
 disp(circularConv);
 
-%% Tabular method [! Incorrect]
-x_n = [1, 3, 5, 7];
-h_n = [2, 4];
-
-% Zero padding
-N = max(length(x_n), length(h_n));
-x_n = [x_n, zeros(1, N - length(x_n))];
-h_n = [h_n, zeros(1, N - length(h_n))];
-
-% retain first element, flip remaining elements
-h_nr = [h_n(1), h_n(end:-1:2)];
-
-% NxN matrix of x(n)
-x_matrix = zeros(N, N);
-
-for i = 1:N
-    x_matrix(:, i) = x_n;
-    x_n = [x_n(end), x_n(1:end - 1)]; % Circular shift
-end
-
-% temp
-disp(x_matrix);
-disp(h_n);
-
-% Multiplication and output
-y_n = x_matrix * h_n';
-disp(y_n);
-
-%% Overlap add method
-x_n = [1, 1, 0, 3, 1, 8, 0, 5, 0, 1, 1, 2, 2, 3];
-h_n = [1, -1, 1];
-
-N = 6;
-M = length(h_n);
-L = N - M + 1; % N = L + M - 1
-
-% Pad zeros to make `length(x_n)` perfect multiple of `L`
-remainder = rem(length(x_n), L);
-padding = zeros(1, L - remainder);
-x_n = [x_n, padding];
-
-% Init matrix
-rows = ceil(length(x_n) / N) + 1;
-x_matrix = zeros(rows, N); % init
-
-% Special overlap add method padding for each section
-padding = zeros(1, M - 1);
-
-for i = 1:L
-    x_matrix(i, :) = [x_n((i - 1) * L + 1:i * L), padding];
-end
-
-disp(x_matrix);
-
-%% Overlap add method
+% --------------- Assignment ---------------
+%% Question 1: Overlap add method
 x_n = [1, 1, 0, 3, 1, 8, 0, 5, 0, 1, 1, 2, 2, 3];
 h_n = [1, -1, 1];
 disp(conv(x_n, h_n));
@@ -209,11 +157,11 @@ L = N - M + 1;
 remainder = rem(length(x_n), L);
 x_n = [x_n, zeros(1, L - remainder)];
 
-% Init x matrix
+% Init x-matrix
 rows = ceil(length(x_n) / N) + 1;
 x_matrix = zeros(rows, N);
 
-% Init h matrix
+% Init column-rotated h-matrix (used in matrix convo)
 h_n = [h_n, zeros(1, N - length(h_n))]; % To make `length(h_n) == N`
 h_matrix = zeros(N, N);
 
@@ -225,7 +173,7 @@ end
 % Init overlap add matrix
 conv_matrix = zeros(rows, N + L * (rows - 1));
 
-% Special overlap add method padding for each section
+% Special `M - 1` overlap add method padding for each section
 padding = zeros(1, M - 1);
 
 for i = 1:rows
@@ -245,7 +193,7 @@ end
 disp(conv_matrix);
 disp(y_n);
 
-%% Overlap save method
+%% Question 2: Overlap save method
 x_n = [1, 1, 0, 3, 1, 8, 0, 5, 0, 1, 1, 2, 2, 3];
 h_n = [1, -1, 1];
 disp(conv(x_n, h_n));
@@ -258,11 +206,11 @@ L = N - M + 1;
 remainder = rem(length(x_n), L);
 x_n = [x_n, zeros(1, L - remainder)];
 
-% Init x matrix
+% Init x-matrix
 rows = ceil(length(x_n) / N) + 1;
 x_matrix = zeros(rows, N);
 
-% Init h matrix
+% Init column-rotated h-matrix (used in matrix convo)
 h_n = [h_n, zeros(1, N - length(h_n))]; % To make `length(h_n) == N`
 h_matrix = zeros(N, N);
 
@@ -271,7 +219,8 @@ for i = 1:N
     h_n = [h_n(end), h_n(1:end - 1)];
 end
 
-% Formation of overlap save x_matrix
+% Formation of overlap save matrix
+% First row which does not borrow from previous row
 x_matrix(1, :) = [zeros(1, M - 1), x_n(1:L)]; % First row with `M-1` zeros prefixed
 
 for i = 2:rows
@@ -279,15 +228,14 @@ for i = 2:rows
     x_matrix(i, :) = [last, x_n((i - 1) * L + 1:i * L)];
 end
 
-% Convolution of each row of x_matrix with h_matrix.
+% Matrix convolution of each row of x_matrix with h_matrix.
 for i = 1:rows
     conv_matrix(i, :) = h_matrix * x_matrix(i, :)';
 end
 
-% Delete first `M-1` columns
+% Delete first `M-1` columns from convolution matrix
 conv_matrix = conv_matrix(:, M:end);
 
-% Flatten matrix. Taking transpose first because MATLAB flattens columnwise
-conv_matrix = conv_matrix';
-conv_matrix = conv_matrix(:)'; % flatten and transpose
-disp(conv_matrix);
+% Flatten matrix
+conv_matrix = conv_matrix'; % column-wise flat -> row-wise flat
+disp(conv_matrix(:)');
