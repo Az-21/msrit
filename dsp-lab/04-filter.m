@@ -132,3 +132,80 @@ end
 % Plot
 m = 0:N - 1;
 stem(m, hn);
+
+%% Butterworth filter
+wp = input('Enter the value of passband frequency in rad/sec : ')
+ws = input('Enter the value of stopband frequency in rad/sec : ')
+rp = input('Enter the value of passband ripple : ')
+rs = input('Enter the value of stoband ripple : ')
+
+[n, wn] = buttord(wp, ws, rp, rs, 's')
+
+if length(wp) == 1
+
+    if wp < ws
+        disp('Lowpass filter')
+        [b, a] = butter(n, wn, 'Low', 's')
+        w = 0:1:(2 * max(wp, ws));
+    else
+        disp('Highpass filter')
+        [b, a] = butter(n, wn, 'High', 's')
+        w = 0:1:(2 * max(wp, ws));
+    end
+
+else
+
+    if wp(1) > ws(1)
+        disp('Bandpass filter')
+        [b, a] = butter(n, wn, 'Pass', 's')
+        w = 0:1:(2 * max(wp(1), ws(1)));
+    else
+        disp('Bandstop fiter')
+        [b, a] = butter(n, wn, 'Stop', 's')
+        w = 0:1:(2 * max(wp(1), ws(1)));
+    end
+
+end
+
+h = freqs(b, a, w)
+mag = 20 * log(abs(h))
+plot(w, mag)
+[z p k] = buttap(n)
+
+%% Chebyshev filter
+wp = input('Enter the value of passband frequency in rad/sec : ')
+ws = input('Enter the value of stopband frequency in rad/sec : ')
+rp = input('Enter the value of passband ripple : ')
+rs = input('Enter the value of stoband ripple : ')
+[n, wn] = cheb1ord(wp, ws, rp, rs, 's')
+
+if length(wp) == 1
+
+    if wp < ws
+        disp('Low pass')
+        [b, a] = cheb1(n, wn, 'Low', 's')
+        w = 0:1:(2 * max(wp, ws));
+    else
+        disp('High pass')
+        [b, a] = cheb1(n, wn, 'High', 's')
+        w = 0:1:(2 * max(wp, ws));
+    end
+
+else
+
+    if wp(1) > ws(1)
+        disp('Bandpass filter')
+        [b, a] = cheb1(n, wn, 'Pass', 's')
+        w = 0:1:(2 * max(wp(1), ws(1)));
+    else
+        disp('Bandstop filter')
+        [b, a] = cheb1(n, wn, 'Stop', 's')
+        w = 0:1:(2 * max(wp(1), ws(1)));
+    end
+
+end
+
+h = freqs(b, a, w)
+mag = 20 * log(abs(h))
+plot(w, mag)
+[z p k] = cheb1ap(n)
