@@ -24,15 +24,14 @@ disp(xn_idft);
 %% DFT using for loop
 x_n = [1, 2, 3, 4]; % Input signal
 N = length(x_n);
+X_k = zeros(N, 1);
 
 for k = 0:N - 1
-    x_k = 0;
 
     for n = 0:N - 1
-        x_k = x_n(n + 1) * exp(-2 * pi * n * k * 1i / N) + x_k;
+        X_k(k + 1, 1) = X_k(k + 1, 1) + x_n(n + 1) * exp(-2 * pi * n * k * 1i / N);
     end
 
-    X_k(k + 1, 1) = x_k;
 end
 
 disp(X_k);

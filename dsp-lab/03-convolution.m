@@ -76,45 +76,39 @@ x_n = [1, 2, 3, 4];
 h_n = [1, -1, 2];
 
 M = length(x_n) + length(h_n) - 1; % equalizing length
-x_n = [x_n zeros(1, M - length(x_n))];
-h_n = [h_n zeros(1, M - length(h_n))];
+x_n = [x_n, zeros(1, M - length(x_n))];
+h_n = [h_n, zeros(1, M - length(h_n))];
 y = zeros(1, M);
 
-for n = 1:M
+h_n = [h_n(1), flip(h_n(2:end))]; % first state
 
-    for k = 1:n
-        y(n) = y(n) + x_n(k) * h_n(n - k + 1);
-    end
-
+for i = 1:M
+    temp = x_n .* h_n;
+    y(1, i) = sum(temp);
+    h_n = [h_n(end), h_n(1:end - 1)];
 end
 
 disp(y);
 
 %% Tabular method
-x_n = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-h_n = [6, 7, 8];
+x = [2, 1, 0, 8];
+h = [1, 9, 9, 5];
 
-shift = 0;
-xLen = length(x_n);
-hLen = length(h_n);
-y_n = zeros(1, xLen + hLen - 1); % tabular convolution init
+N = length(x);
+M = length(h);
 
-for i = 1:hLen
-    row = tabularShift(x_n, xLen, hLen, shift);
-    y_n = y_n + h_n(i) .* row; % add columns
-    shift = shift + 1;
+y_matrix = zeros(M, N + M - 1);
+
+for i = 1:M
+    temp = h(i) * x';
+    leftPad = zeros(1, i - 1);
+    rightPad = zeros(1, M - i);
+    y_matrix(i, :) = [leftPad, temp', rightPad];
 end
 
-disp(y_n);
+disp(sum(y_matrix));
 
-function y_n = tabularShift(x_n, xLen, hLen, shift)
-    y_n = zeros(1, xLen + hLen - 1);
-    yLen = length(y_n);
-    padding = zeros(1, yLen - xLen - shift);
-    y_n(shift + 1:end) = [x_n(1:end), padding];
-end
-
-%% Circular convolution
+%% Circular convolution | Needs clarification
 x_n = [1, 3, 5, 7];
 h_n = [2, 4];
 
@@ -127,7 +121,7 @@ for n = 1:N
     y_n = 0;
 
     for m = 1:N
-        h_n(N + n +1) = h_n(n);
+        h_n(N + n + 1) = h_n(n);
 
         if (n - m) > 0
             y_n = x_n(m) * h_n(n - m) + y_n;
