@@ -28,11 +28,10 @@ int main() {
       Xk_im[n] += -xn_re[k] * sin(theta) + xn_im[k] * cos(theta);
     }
 
-    if (Xk_im[n] < 0) {
+    if (Xk_im[n] < 0)
       printf("%0.10f - i %0.10f\n", Xk_re[n], -Xk_im[n]);
-    } else {
+    else
       printf("%0.10f + i %0.10f\n", Xk_re[n], Xk_im[n]);
-    }
   }
 
   return 0;

@@ -29,10 +29,8 @@ int main() {
   // Slide multiplication
   for (int i = 0; i < N; i++) {
     double sigma = 0; // sum of each overlap slide
-    for (int j = 0; j <= i; j++) {
+    for (int j = 0; j <= i; j++)
       sigma += x[j] * h[i - j];
-      // printf("%0.0f * %0.0f = %0.0f\n", x[j], h[i - j], temp);
-    }
     printf("%0.0f ", sigma);
   }
 

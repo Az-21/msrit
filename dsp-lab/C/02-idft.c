@@ -31,11 +31,10 @@ int main() {
     xn_re[k] /= N;
     xn_im[k] /= N;
 
-    if (xn_im[k] < 0) {
+    if (xn_im[k] < 0)
       printf("%0.10f - i %0.10f\n", xn_re[k], -xn_im[k]);
-    } else {
+    else
       printf("%0.10f + i %0.10f\n", xn_re[k], xn_im[k]);
-    }
   }
 
   return 0;

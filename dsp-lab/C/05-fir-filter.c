@@ -5,33 +5,49 @@
 // FIR | 3 Window Types | 4 Filter Types | 12 P&Cs
 
 /* --- Window functions --- */
-double wnRectangular() { return 1; }
-double wnHanning(int n, int N) { return 0.5 * (1 - cos(2 * n * pi / (N - 1))); }
-double wnHamming(int n, int N) {
-  return 0.54 - 0.46 * cos(2 * n * pi / (N - 1));
+// wType: 0 = rect, 1 = hanning, 2 = hamming
+double wn(int wType, int n, int N) {
+  switch (wType) {
+  case 0:
+    return 1;
+  case 1:
+    return 0.5 * (1 - cos(2 * n * pi / (N - 1)));
+  case 2:
+    return 0.54 - 0.46 * cos(2 * n * pi / (N - 1));
+  default:
+    printf("Unexpected window type");
+    return 0;
+    break;
+  }
 }
 
-/* --- Window functions --- */
-double hdnLPF(double wc, int n, int tao) {
-  if (n != tao)
-    return sin(wc * (n - tao)) / (pi * (n - tao));
-  return wc / tao;
-}
-double hdnHPF(double wc, int n, int tao) {
-  if (n != tao)
-    return (sin(pi * (n - tao)) - sin(wc * (n - tao))) / (pi * (n - tao));
-  return (pi - wc) / tao;
-}
-double hdnBPF(double wc1, double wc2, int n, int tao) {
-  if (n != tao)
-    return (sin(wc2 * (n - tao)) - sin(wc1 * (n - tao))) / (pi * (n - tao));
-  return (wc2 - wc1) / tao;
-}
-double hdnBSF(double wc1, double wc2, int n, int tao) {
-  if (n != tao)
-    return (sin(pi * (n - tao)) - sin(wc2 * (n - tao)) + sin(wc1 * (n - tao))) /
-           (pi * (n - tao));
-  return (pi - wc2 + wc1) / tao;
+/* --- Filter functions --- */
+// fType: 0 = LPF, 1 = HPF, 2 = BPF, 3 = BSF
+double hdn(int fType, double wc1, double wc2, int n, int tao) {
+  switch (fType) {
+  case 0:
+    if (n != tao)
+      return sin(wc1 * (n - tao)) / (pi * (n - tao));
+    return wc1 / tao;
+  case 1:
+    if (n != tao)
+      return (sin(pi * (n - tao)) - sin(wc1 * (n - tao))) / (pi * (n - tao));
+    return (pi - wc1) / tao;
+  case 2:
+    if (n != tao)
+      return (sin(wc2 * (n - tao)) - sin(wc1 * (n - tao))) / (pi * (n - tao));
+    return (wc2 - wc1) / tao;
+  case 3:
+    if (n != tao)
+      return (sin(pi * (n - tao)) - sin(wc2 * (n - tao)) +
+              sin(wc1 * (n - tao))) /
+             (pi * (n - tao));
+    return (pi - wc2 + wc1) / tao;
+  default:
+    printf("Unexpected filter type");
+    return 0;
+    break;
+  }
 }
 
 int main() {
@@ -90,93 +106,14 @@ int main() {
   /* --- Tao --- */
   if (N % 2 == 0)
     N++;
-  int tao = (N - 1) / 2;
+  const int tao = (N - 1) / 2;
   printf("N = %d, tao = %d, tw = %f\n\n", N, tao, tw);
 
   /* --- H(n) --- */
-  double H[256]; // WARNING: increase this value for high frquencies
-
-  // TODO: This section is unoptimized. It would be better to move these switch
-  // statements to the function itself for a one line code.
-  switch (wType) {
-  case 0:
-    switch (fType) {
-    case 0:
-      for (int n = 0; n < N; n++)
-        H[n] = wnRectangular(n) * hdnLPF(wc1, n, tao);
-      break;
-    case 1:
-      for (int n = 0; n < N; n++)
-        H[n] = wnRectangular(n) * hdnHPF(wc1, n, tao);
-      break;
-    case 2:
-      for (int n = 0; n < N; n++)
-        H[n] = wnRectangular(n) * hdnBPF(wc1, wc2, n, tao);
-      break;
-    case 3:
-      for (int n = 0; n < N; n++)
-        H[n] = wnRectangular(n) * hdnBSF(wc1, wc2, n, tao);
-      break;
-    default:
-      printf("Uncaught filter type\n");
-      break;
-    }
-    break;
-  case 1:
-    switch (fType) {
-    case 0:
-      for (int n = 0; n < N; n++)
-        H[n] = wnHanning(n, N) * hdnLPF(wc1, n, tao);
-      break;
-    case 1:
-      for (int n = 0; n < N; n++)
-        H[n] = wnHanning(n, N) * hdnHPF(wc1, n, tao);
-      break;
-    case 2:
-      for (int n = 0; n < N; n++)
-        H[n] = wnHanning(n, N) * hdnBPF(wc1, wc2, n, tao);
-      break;
-    case 3:
-      for (int n = 0; n < N; n++)
-        H[n] = wnHanning(n, N) * hdnBSF(wc1, wc2, n, tao);
-      break;
-    default:
-      printf("Uncaught filter type\n");
-      break;
-    }
-    break;
-  case 2:
-    switch (fType) {
-    case 0:
-      for (int n = 0; n < N; n++)
-        H[n] = wnHamming(n, N) * hdnLPF(wc1, n, tao);
-      break;
-    case 1:
-      for (int n = 0; n < N; n++)
-        H[n] = wnHamming(n, N) * hdnHPF(wc1, n, tao);
-      break;
-    case 2:
-      for (int n = 0; n < N; n++)
-        H[n] = wnHamming(n, N) * hdnBPF(wc1, wc2, n, tao);
-      break;
-    case 3:
-      for (int n = 0; n < N; n++)
-        H[n] = wnHamming(n, N) * hdnBSF(wc1, wc2, n, tao);
-      break;
-    default:
-      printf("Uncaught filter type\n");
-      break;
-    }
-    break;
-
-  default:
-    printf("Uncaught window type\n");
-    break;
-  }
-
+  double H[256]; // WARNING: increase this value for high frequencies
   for (int n = 0; n < N; n++) {
+    H[n] = wn(wType, n, N) * hdn(fType, wc1, wc2, n, tao);
     printf("H(%d) = %0.10f\n", n, H[n]);
   }
-
   return 0;
 }
