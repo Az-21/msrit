@@ -143,6 +143,7 @@ x_n = [1, 1, 0, 3, 1, 8, 0, 5, 0, 1, 1, 2, 2, 3];
 h_n = [1, -1, 1];
 disp(conv(x_n, h_n));
 
+convLen = length(x_n) + length(h_n) - 1;
 M = length(h_n);
 N = 6;
 L = N - M + 1;
@@ -152,7 +153,7 @@ remainder = rem(length(x_n), L);
 x_n = [x_n, zeros(1, L - remainder)];
 
 % Init x-matrix
-rows = ceil(length(x_n) / N) + 1;
+rows = length(x_n) / L;
 x_matrix = zeros(rows, N);
 
 % Init column-rotated h-matrix (used in matrix convo)
@@ -185,15 +186,15 @@ for i = 1:rows
 end
 
 disp(conv_matrix);
-disp(y_n);
+disp(y_n(1:convLen));
 
 %% Question 2: Overlap save method
 x_n = [1, 1, 0, 3, 1, 8, 0, 5, 0, 1, 1, 2, 2, 3];
 h_n = [1, -1, 1];
-disp(conv(x_n, h_n));
+convLen = length(x_n) + length(h_n) - 1;
 
 M = length(h_n);
-N = 6;
+N = 10;
 L = N - M + 1;
 
 % Pad zeros to make `length(x_n)` perfect multiple of `L`
@@ -201,7 +202,7 @@ remainder = rem(length(x_n), L);
 x_n = [x_n, zeros(1, L - remainder)];
 
 % Init x-matrix
-rows = ceil(length(x_n) / N) + 1;
+rows = length(x_n) / L;
 x_matrix = zeros(rows, N);
 
 % Init column-rotated h-matrix (used in matrix convo)
@@ -223,6 +224,7 @@ for i = 2:rows
 end
 
 % Matrix convolution of each row of x_matrix with h_matrix.
+conv_matrix = zeros(rows, N);
 for i = 1:rows
     conv_matrix(i, :) = h_matrix * x_matrix(i, :)';
 end
@@ -232,4 +234,5 @@ conv_matrix = conv_matrix(:, M:end);
 
 % Flatten matrix
 conv_matrix = conv_matrix'; % column-wise flat -> row-wise flat
-disp(conv_matrix(:)');
+conv_matrix = conv_matrix(:)';
+disp(conv_matrix(1:convLen));
