@@ -21,9 +21,6 @@ fprintf('3 -> Double line to ground fault');
 faultType = input('');
 fprintf('\n');
 
-% Calculations
-base = P / (sqrt(3) * I);
-
 % // Line to ground fault
 if faultType == 1
     fprintf('Single line to ground fault selected\n');
