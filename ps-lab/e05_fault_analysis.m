@@ -25,12 +25,11 @@ fprintf('\n');
 if faultType == 1
     fprintf('Single line to ground fault selected\n');
  
-    % Symmetrical components of current
+    % Symmetric components
     Ia1_pu = Ea / (Z0 + Z1 + Z2);
     Ia2_pu = Ia1_pu;
     Ia0_pu = Ia1_pu;
- 
-    % Symmetrical components of voltage
+
     Va1_pu = Ea - Ia1_pu * Z1;
     Va2_pu = - 1 * Ia2_pu * Z2;
     Va0_pu = - 1 * Ia0_pu * Z0;
@@ -38,17 +37,12 @@ if faultType == 1
 % // Line to line fault
 elseif faultType == 2
     fprintf('Line to line fault selected\n');
- 
-    % Currents
+
+    % Symmertic components
     Ia1_pu = Ea / (Z1 + Z2);
     Ia2_pu = - 1 * Ia1_pu;
     Ia0_pu = 0;
- 
-    Ia_pu = Ia1_pu + Ia2_pu + Ia0_pu;
-    Ib_pu = alpha ^ 2 * Ia1_pu + alpha * Ia2_pu + Ia0_pu;
-    Ic_pu = - 1 * Ib_pu;
- 
-    % Symmetric voltage components
+    
     Va1_pu = 1 - Ia1_pu * Z1;
     Va2_pu = Va1_pu;
     Va0_pu = 0; % neutral is grounded
@@ -57,6 +51,7 @@ elseif faultType == 2
 else
     fprintf('Double line to ground fault selected\n');
  
+    % Symmetric components
     Ia1_pu = Ea / (Z1 + Z2 * Z0 / (Z2 + Z0));
     Va1_pu = Ea - Ia1_pu * Z1;
     Va2_pu = Va1_pu;
