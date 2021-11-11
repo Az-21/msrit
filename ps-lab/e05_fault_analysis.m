@@ -24,30 +24,21 @@ fprintf('\n');
 % Calculations
 base = P / (sqrt(3) * I);
 
-% LG Fault
+% // Line to ground fault
 if faultType == 1
     fprintf('Single line to ground fault selected\n');
  
-    % Currents
+    % Symmetrical components of current
     Ia1_pu = Ea / (Z0 + Z1 + Z2);
     Ia2_pu = Ia1_pu;
     Ia0_pu = Ia1_pu;
-    Ia_pu = 3 * Ia1_pu;
-    Ib_pu = 0;
-    Ic_pu = 0;
  
     % Symmetrical components of voltage
     Va1_pu = Ea - Ia1_pu * Z1;
     Va2_pu = - 1 * Ia2_pu * Z2;
     Va0_pu = - 1 * Ia0_pu * Z0;
  
-    % Line to ground voltages
-    alpha = 1 * exp(1j * 120 * pi / 180); % 120, 240, 360
-    Va_pu = Va1_pu + Va2_pu + Va0_pu;
-    Vb_pu = alpha ^ 2 * Va1_pu + alpha * Va2_pu + alpha ^ 3 * Va0_pu;
-    Vc_pu = alpha * Va1_pu + alpha ^ 2 * Va2_pu + alpha ^ 3 * Va0_pu;
- 
-    % Line to line fault
+% // Line to line fault
 elseif faultType == 2
     fprintf('Line to line fault selected\n');
  
@@ -64,13 +55,8 @@ elseif faultType == 2
     Va1_pu = 1 - Ia1_pu * Z1;
     Va2_pu = Va1_pu;
     Va0_pu = 0; % neutral is grounded
- 
-    % Line to ground fault voltages
-    Va_pu = Va1_pu + Va2_pu + Va0_pu;
-    Vb_pu = alpha ^ 2 * Va1_pu + alpha * Va2_pu + Va0_pu;
-    Vc_pu = alpha * Va1_pu + alpha ^ 2 * Va2_pu + Va0_pu;
- 
-    % Double line to ground fault
+    
+% // Double line to ground fault
 else
     fprintf('Double line to ground fault selected\n');
  
@@ -78,31 +64,30 @@ else
     Va1_pu = Ea - Ia1_pu * Z1;
     Va2_pu = Va1_pu;
     Va0_pu = Va1_pu;
- 
     Ia2_pu = - 1 * Va2_pu / Z2;
     Ia0_pu = - 1 * Va0_pu / Z0;
- 
-    % Fault current
-    Ia_pu = Ia1_pu + Ia2_pu + Ia0_pu;
-    Ib_pu = alpha ^ 2 * Ia1_pu + alpha * Ia2_pu + Ia0_pu;
-    Ic_pu = alpha * Ia1_pu + alpha ^ 2 * Ia2_pu + Ia0_pu;
- 
-    % Fault voltage
-    Va_pu = 3 * Va1_pu;
-    Vb_pu = 0;
-    Vc_pu = 0;
 end
+
+% Fault currents
+Ia_pu = Ia1_pu + Ia2_pu + Ia0_pu;
+Ib_pu = alpha ^ 2 * Ia1_pu + alpha * Ia2_pu + Ia0_pu;
+Ic_pu = alpha * Ia1_pu + alpha ^ 2 * Ia2_pu + Ia0_pu;
+
+% Fault voltages
+Va_pu = Va1_pu + Va2_pu + Va0_pu;
+Vb_pu = alpha ^ 2 * Va1_pu + alpha * Va2_pu + Va0_pu;
+Vc_pu = alpha * Va1_pu + alpha ^ 2 * Va2_pu + Va0_pu;
+
+% Line to line voltages
+Vab_pu = Va_pu - Vb_pu;
+Vbc_pu = Vb_pu - Vc_pu;
+Vca_pu = Vc_pu - Va_pu;
 
 % Conversion from p.u. to normal current
 base = P / (sqrt(3) * I);
 Ia = Ia_pu * base;
 Ib = Ib_pu * base;
 Ic = Ic_pu * base;
-
-% Line to line voltages
-Vab_pu = Va_pu - Vb_pu;
-Vbc_pu = Vb_pu - Vc_pu;
-Vca_pu = Vc_pu - Va_pu;
 
 % Conversion from p.u. to normal voltage
 base = I / sqrt(3);
