@@ -13,6 +13,14 @@ Y =[[complex(20, - 50), complex(- 10, 20), complex(- 10, 30)],
     [complex(- 10, 20), complex(26, - 52), complex(- 16, 32)],
     [complex(- 10, 30), complex(- 16, 32), complex(26, - 62)]];
 
+% Input params
+fprintf('Number of busses = %d\n', n);
+fprintf('P = %f | %f | %f p.u.\n', P(1), P(2), P(3));
+fprintf('Q = %f | %f | %f p.u.\n', Q(1), Q(2), Q(3));
+fprintf('Ybus = \n');
+disp(Y);
+
+% GS Loop
 delta = 1; % error placeholder
 iterationCount = 1;
 
@@ -37,6 +45,6 @@ while (delta > 0.00001)
 end
 
 % Output
-fprintf('\n\nTotal iterations = %d\n', iterationCount - 1);
+fprintf('\nTotal iterations = %d\n', iterationCount - 1);
 fprintf('V2 = %f ∠%f° p.u.\n', abs(V(2)), angle(V(2)) * 180 / pi);
 fprintf('V3 = %f ∠%f° p.u.\n', abs(V(3)), angle(V(3)) * 180 / pi);
