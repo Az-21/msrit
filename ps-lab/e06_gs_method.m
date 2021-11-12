@@ -31,10 +31,12 @@ while (delta > 0.00001)
     difference = abs(V(2:n)) - abs(V_prev(2:n));
     delta = max(abs(difference));
 
-    % TODO: add each iteration here
+    fprintf('V2(%d) = %f + %fi\n', iterationCount, real(V(2)), imag(V(2)));
+    fprintf('V3(%d) = %f + %fi\n', iterationCount, real(V(3)), imag(V(3)));
     iterationCount = iterationCount + 1;
 end
 
-fprintf('Iteration = %d\n', iterationCount);
+% Output
+fprintf('\n\nTotal iterations = %d\n', iterationCount - 1);
 fprintf('V2 = %f ∠%f° p.u.\n', abs(V(2)), angle(V(2)) * 180 / pi);
 fprintf('V3 = %f ∠%f° p.u.\n', abs(V(3)), angle(V(3)) * 180 / pi);
