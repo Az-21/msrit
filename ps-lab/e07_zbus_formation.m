@@ -10,11 +10,13 @@ data = [[1, 2, 0.1, 1],
         [2, 3, 0.5, 1],
         [3, 1, 0.2, 2]];
 
-% Zbus building algorithm
-n = max(max(data(:, 1)), max(data(:, 2)));
-nbr = length(data(:, 1));
+% Properties of Zbus
+elements = length(data(:, 1));
 Zbus = zeros(1, 1);
-for i = 1:1:nbr
+stepCount = 0;
+        
+% Zbus building algorithm
+for i = 1:elements
     if (data(i, 4) == 1)
         sb = data(i, 1);
         eb = data(i, 2);
@@ -41,9 +43,15 @@ for i = 1:1:nbr
         zn_dia = Zbus(sb, sb) + Zbus(eb, eb) - 2 * Zbus(sb, eb) + data(i, 3);
         Zbus = [Zbus] - [(zncol * znrow) / zn_dia];
     end
-end
-Zbus = Zbus(2:n, 2:n);
 
-% Output
-disp('Zbus =');
-disp(Zbus);
+    stepCount = stepCount + 1;
+    
+    % Output
+    fprintf('Step %d | Type %d modification\n', stepCount, data(i, 4));
+    if i ~= elements
+        fprintf('Zbus(new) =\n');
+    else
+        fprintf('Zbus(final) =\n');
+    end
+    disp(Zbus(2:end, 2:end));
+end
