@@ -53,7 +53,7 @@ end
 
 % Calculations
 Vr_ph = Vr_ll / sqrt(3);
-Ir_ll = Ps / (sqrt(3) * Vr_ll * pf);
+Ir_ll = Ps / (sqrt(3) * Vr_ll);
 Ir_ph = Ir_ll * exp(- 1j * acos(pf));
 
 Vs_ph = (A * Vr_ph) + (B * Ir_ph);
