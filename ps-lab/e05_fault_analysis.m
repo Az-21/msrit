@@ -43,7 +43,7 @@ elseif faultType == 2
     Ia2_pu = - 1 * Ia1_pu;
     Ia0_pu = 0;
     
-    Va1_pu = 1 - Ia1_pu * Z1;
+    Va1_pu = Ea - Ia1_pu * Z1;
     Va2_pu = Va1_pu;
     Va0_pu = 0; % neutral is grounded
     
