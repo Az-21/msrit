@@ -1,8 +1,8 @@
-% Experiment 8
-% Swing Equation
-% Abhishek Choudhary
-% 1MS18EE003
 clc; clear; close all;
+
+% ---------------------------------------------------------------------------- %
+%                                Swing Equation                                %
+% ---------------------------------------------------------------------------- %
 
 % Params
 x1 = 0.45; % transfer reactance before fault
