@@ -6,9 +6,9 @@ clc; clear; close all;
 
 % Start, end, impedance, modification type (new/existing)
 data = [
-    [1, 2, 0.1, 'n'],
-    [2, 3, 0.5, 'n'],
-    [3, 1, 0.2, 'e']];
+    [1, 2, 0.1, 1]
+    [2, 3, 0.5, 2]
+    [3, 1, 0.2, 3]];
 
 % Properties of Zbus
 elements = length(data(:, 1));
@@ -19,7 +19,7 @@ stepCount = 0;
 for i = 1:elements
 
     % Type 1 and Type 2 modification
-    if (data(i, 4) == 'n')
+    if (data(i, 4) <= 2)
         sb = data(i, 1);
         eb = data(i, 2);
 
@@ -33,10 +33,9 @@ for i = 1:elements
         znrow = Zbus(sb, :);
         zn_dia = Zbus(sb, sb) + data(i, 3);
         Zbus = [Zbus zncol; znrow zn_dia];
-    end
 
     % Type 3 and Type 4 modification
-    if (data(i, 4) == 'e')
+    else
         sb = data(i, 1);
         eb = data(i, 2);
 
