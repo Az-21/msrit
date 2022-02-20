@@ -52,6 +52,6 @@ while delta > 0.00001
 end
 
 % Output
-fprintf('\nTotal iterations = %d\n', iterationCount - 1);
+fprintf('\nTotal iterations = %d\n', iterationCount);
 fprintf('V2 = %f ∠%f° p.u.\n', abs(V(2)), angle(V(2)) * 180 / pi);
 fprintf('V3 = %f ∠%f° p.u.\n', abs(V(3)), angle(V(3)) * 180 / pi);
