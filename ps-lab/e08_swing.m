@@ -26,3 +26,6 @@ dmax = pi - asin(Pm / Pm3);
 dr = ((Pm * (dmax - d0)) - (Pm2 * cos(d0)) + (Pm3 * cos(dmax))) / (Pm3 - Pm2);
 dcr = acos(dr);
 tcr = sqrt((2 * M * (dcr - d0) / (Pm)));
+
+fprintf("dcr = %f degree\n", dcr * 180 / pi);
+fprintf("tcr = %f\n", tcr);
