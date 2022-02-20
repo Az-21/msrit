@@ -48,8 +48,7 @@ P = 0.5;
 
 % Calculating |E|
 I = P / (V * pf);
-phi = acos(pf);
-Ia = I * cos(phi) - 1j * I * sin(phi);
+Ia = I * exp(-1j * acos(pf));
 
 Z = Ra + 1j * Xs;
 E = V + Ia * Z;
