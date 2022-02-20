@@ -6,7 +6,7 @@ clc; clear; close all;
 
 % Params
 P = 20 * 10^6;
-I = 13.8 * 10^3;
+V = 13.8 * 10^3;
 Z1 = complex(0, 0.25);
 Z2 = complex(0, 0.35);
 Z0 = complex(0, 0.10);
@@ -75,20 +75,20 @@ Vbc_pu = Vb_pu - Vc_pu;
 Vca_pu = Vc_pu - Va_pu;
 
 % Conversion from p.u. to normal current
-base = I / sqrt(3);
+base = P / (sqrt(3) * V);
 Ia = Ia_pu * base;
 Ib = Ib_pu * base;
 Ic = Ic_pu * base;
 
 % Conversion from p.u. to normal voltage
-base = P / (sqrt(3) * I);
+base = V / sqrt(3);
 Vab = Vab_pu * base;
 Vbc = Vbc_pu * base;
 Vca = Vca_pu * base;
 
 % Output (in angle form)
 fprintf('P = %f MVA\n', P * 10^(- 6));
-fprintf('I = %f kA\n', I * 10^(- 3));
+fprintf('I = %f kV\n', V * 10^(- 3));
 fprintf('Z1 = %fj p.u.\n', imag(Z1));
 fprintf('Z2 = %fj p.u.\n', imag(Z2));
 fprintf('Z0 = %fj p.u.\n\n', imag(Z0));
