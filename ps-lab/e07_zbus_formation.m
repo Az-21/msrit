@@ -4,11 +4,11 @@ clc; clear; close all;
 %                                Z Bus Formation                               %
 % ---------------------------------------------------------------------------- %
 
-% Start, end, impedance, modification type
+% Start, end, impedance, modification type (new/existing)
 data = [
-    [1, 2, 0.1, 1],
-    [2, 3, 0.5, 1],
-    [3, 1, 0.2, 2]];
+    [1, 2, 0.1, 'n'],
+    [2, 3, 0.5, 'n'],
+    [3, 1, 0.2, 'e']];
 
 % Properties of Zbus
 elements = length(data(:, 1));
@@ -19,7 +19,7 @@ stepCount = 0;
 for i = 1:elements
 
     % Type 1 and Type 2 modification
-    if (data(i, 4) == 1)
+    if (data(i, 4) == 'n')
         sb = data(i, 1);
         eb = data(i, 2);
 
@@ -36,7 +36,7 @@ for i = 1:elements
     end
 
     % Type 3 and Type 4 modification
-    if (data(i, 4) == 2)
+    if (data(i, 4) == 'e')
         sb = data(i, 1);
         eb = data(i, 2);
 
