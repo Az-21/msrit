@@ -22,7 +22,6 @@ if L <= 80
     A = 1;
     B = Z;
     C = 0;
-    D = 1;
 
     % Medium transmission line (T-config)
 elseif L > 80 && L <= 240 && config == 'T'
@@ -30,7 +29,6 @@ elseif L > 80 && L <= 240 && config == 'T'
     A = 1 + (Y * Z) / 2;
     B = Z * (1 + (Y * Z) / 4);
     C = Y;
-    D = A;
 
     % Medium transmission line (Pi-config)
 elseif L > 80 && L <= 240 && config == 'P'
@@ -38,7 +36,6 @@ elseif L > 80 && L <= 240 && config == 'P'
     A = 1 + (Y * Z) / 2;
     B = Z;
     C = Y * (1 + (Y * Z) / 4);
-    D = A;
 
     % Long transmission line
 else
@@ -48,8 +45,10 @@ else
     A = cosh (gamma * L);
     B = Zc * sinh (gamma * L);
     C = (1 / Zc) * sinh (gamma * L);
-    D = A;
 end
+
+% Commmon transmission line parameter
+D = A;
 
 % Calculations
 Vr_ph = Vr_ll / sqrt(3);
